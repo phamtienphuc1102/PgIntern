@@ -14,6 +14,9 @@ import { replace } from 'connected-react-router';
 import { getErrorMessageResponse } from '../../../utils';
 import SignUpFormV2 from '../components/SignUpFormV2';
 import SignUpForm from '../components/SignUpForm';
+import { useTranslation } from 'react-i18next';
+import '../../../i18n/i18n'
+import { Popover, Button } from 'react-bootstrap';
 
 const SignUpPage = () => {
   const dispatch = useDispatch<ThunkDispatch<AppState, null, Action<string>>>();
@@ -22,6 +25,14 @@ const SignUpPage = () => {
   const [locations, setLocations] = useState([]);
   const [states, setStates] = useState([]);
   const [idRegion, setIdRegion] = useState('');
+  const [showPopover, setShowPopover] = useState(false);
+
+  const { t, i18n } = useTranslation()
+  const togglePopover = () => setShowPopover(!showPopover);
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    togglePopover();
+  };
 
   const getLocation = React.useCallback(async (idRegion?: string) => {
     setLoading(true);
@@ -81,6 +92,36 @@ const SignUpPage = () => {
         flexDirection: 'column',
       }}
     >
+      <div className="d-inline-block">
+      
+        <Button
+          variant="link"
+          onClick={togglePopover}
+          style={{
+            border: 'none',
+            backgroundColor: 'transparent',
+            color: '#007bff',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            textDecoration: 'underline',
+            cursor: 'pointer',
+          }}
+        >
+          {t('changeLanguage')}
+      </Button>
+      <Popover show={showPopover}>
+        <Popover.Body>
+          <Button variant="link" onClick={() => changeLanguage('vi')}>
+            vi
+          </Button>
+          
+          <Button variant="link" onClick={() => changeLanguage('en')}>
+            en
+          </Button>
+        </Popover.Body>
+      </Popover>
+    </div>
+
       <img src={logo} alt="" style={{ maxWidth: '250px', margin: '32px' }} />
 
       <SignUpFormV2
@@ -91,14 +132,6 @@ const SignUpPage = () => {
         states={states}
         onChangeRegion={onChangeRegion}
       />
-      {/* <SignUpForm
-        onSignUp={onSignUp}
-        loading={loading}
-        errorMessage={errorMessage}
-        locations={locations}
-        states={states}
-        onChangeRegion={onChangeRegion}
-      /> */}
     </div>
   );
 };

@@ -6,6 +6,9 @@ import { FormattedMessage } from 'react-intl';
 import { IGenderParams, ILocationParams, ISignUpParams, ISignUpValidation } from '../../../models/auth';
 import { GENDER } from '../../intl/constants';
 import { validateSignUp } from '../utils';
+import { useTranslation } from 'react-i18next';
+import '../../../i18n/i18n'
+import { Popover, Button } from 'react-bootstrap';
 
 interface Props {
   onSignUp(values: ISignUpParams): void;
@@ -30,7 +33,11 @@ const SignUpFormV2 = (props: Props) => {
   const { onSignUp, loading, errorMessage, locations, states, onChangeRegion } = props;
   const [state, setStates] = useState('')
   const [region, setRegion] = useState('')
+ 
 
+
+  const { t } = useTranslation()
+  
   const {
     register,
     handleSubmit,
@@ -38,9 +45,8 @@ const SignUpFormV2 = (props: Props) => {
     watch,
   } = useForm<SignUpFormInputs>({ mode: 'onChange' });
 
-  const password = watch('password');
-  // const region = watch('region');
 
+  const password = watch('password');
 
   const onSubmit = (data: SignUpFormInputs) => {
     onSignUp(data);
@@ -105,6 +111,8 @@ const SignUpFormV2 = (props: Props) => {
   };
 
   return (
+    <div>
+
     <form
       autoComplete="off"
       style={{ maxWidth: '560px', width: '100%' }}
@@ -120,7 +128,7 @@ const SignUpFormV2 = (props: Props) => {
 
       <div className="col-md-12">
         <label htmlFor="inputEmail" className="form-label">
-          <FormattedMessage id="email" />
+          {t('email')}
         </label>
         <input
           type="text"
@@ -137,14 +145,14 @@ const SignUpFormV2 = (props: Props) => {
 
         {errors.email && (
           <small className="text-danger">
-            <FormattedMessage id={errors.email.message} />
+            {t(`${errors.email.message}`)}
           </small>
         )}
       </div>
 
       <div className="col-md-12">
         <label htmlFor="inputPassword" className="form-label">
-          <FormattedMessage id="password" />
+          {t('password')}
         </label>
         <input
           type="password"
@@ -161,7 +169,7 @@ const SignUpFormV2 = (props: Props) => {
 
         {errors.password && (
           <small className="text-danger">
-            <FormattedMessage id={errors.password.message} />
+            {t(`${errors.password.message}`)}
           </small>
         )}
 
@@ -170,7 +178,7 @@ const SignUpFormV2 = (props: Props) => {
       <div className="col-md-12">
 
         <label htmlFor="inputRepeatPassword" className="form-label">
-          <FormattedMessage id="repeatPassword" />
+          {t('repeatPassword')}
         </label>
         <input
           type="password"
@@ -185,20 +193,20 @@ const SignUpFormV2 = (props: Props) => {
         
         {errors.repeatPassword?.type === 'required' && (
           <small className="text-danger">
-            <FormattedMessage id="passwordRequire" />
+            {t(`passwordRequire`)}
           </small>
         )}
 
         {errors.repeatPassword?.type === 'validate' && (
           <small className="text-danger">
-            <FormattedMessage id="mathPasswordInvalid" />
+            {t(`mathPasswordInvalid`)}
           </small>
         )}
       </div>
 
       <div className="col-md-12">
         <label htmlFor="inputName" className="form-label">
-          <FormattedMessage id="name" />
+          {t('name')}
         </label>
 
         <input
@@ -215,14 +223,14 @@ const SignUpFormV2 = (props: Props) => {
 
         {errors.name && (
           <small className="text-danger">
-            <FormattedMessage id={errors.name.message} />
+            {t(`${errors.name.message}`)}
           </small>
         )}
       </div>
       
       <div className="col-md-12">
         <label htmlFor="selectGender" className="form-label">
-          <FormattedMessage id="gender" />
+          {t('gender')}
         </label>
         <select
               className="form-control"
@@ -241,14 +249,14 @@ const SignUpFormV2 = (props: Props) => {
 
             {errors.gender && (
               <small className="text-danger">
-                <FormattedMessage id={errors.gender.message} />
+                {t(`${errors.gender.message}`)}
               </small>
             )}
       </div>
 
       <div className="col-md-12">
         <label htmlFor="selectRegion" className="form-label">
-          <FormattedMessage id="region" />
+          {t('region')}
         </label>
         <select
               className="form-control"
@@ -269,7 +277,7 @@ const SignUpFormV2 = (props: Props) => {
 
         {errors.region && (
           <small className="text-danger">
-            <FormattedMessage id={errors.region.message} />
+            {t(`${errors.region.message}`)}
           </small>
         )}
       </div>
@@ -277,7 +285,7 @@ const SignUpFormV2 = (props: Props) => {
       {region && (
         <div className="col-md-12">
         <label htmlFor="selectState" className="form-label">
-          <FormattedMessage id="state" />
+          {t('state')}
         </label>
         <select
               className="form-control"
@@ -297,7 +305,7 @@ const SignUpFormV2 = (props: Props) => {
 
             {errors.state && (
               <small className="text-danger">
-                <FormattedMessage id={errors.state.message} />
+                {t(`${errors.state.message}`)}
               </small>
            )}
       </div>
@@ -313,11 +321,12 @@ const SignUpFormV2 = (props: Props) => {
             disabled={loading}
           >
             {loading && <div className="spinner-border spinner-border-sm text-light mr-2" role="status" />}
-            <FormattedMessage id="register" />
+            {t('register')}
           </button>
         </div>
       </div>
     </form>
+    </div>
   );
 };
 

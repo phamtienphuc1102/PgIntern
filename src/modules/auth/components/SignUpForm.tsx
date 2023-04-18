@@ -96,6 +96,9 @@ const SignUpForm = (props: Props) => {
   };
 
   return (
+    <div>
+
+    
     <form
       autoComplete="off"
       style={{ maxWidth: '560px', width: '100%' }}
@@ -259,6 +262,7 @@ const SignUpForm = (props: Props) => {
         </div>
       </div>
     </form>
+    </div>
   );
 };
 
